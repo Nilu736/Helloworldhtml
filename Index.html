@@ -169,7 +169,69 @@
 			justify-content: center;
 			color: white;
 		}
+
+		#search:invalid {
+			border-color: red;
+		}
+
+		#search:valid {
+			border-color: green;
+		}
+
+		.error-message {
+			color: red;
+			font-size: 12px;
+			margin-top: 5px;
+			display: none;
+		}
 	</style>
+	<script>
+		function handleSearch(event) {
+			event.preventDefault();
+			const searchInput = document.getElementById('search');
+			const searchValue = searchInput.value.trim();
+			
+			if (searchValue === '') {
+				alert('Please enter a search term');
+				searchInput.focus();
+				return false;
+			}
+			
+			if (searchValue.length < 2) {
+				alert('Search term must be at least 2 characters long');
+				searchInput.focus();
+				return false;
+			}
+			
+			// Validate against special characters only
+			const specialCharPattern = /^[!@#$%^&*()_+=\[\]{};':"\\|,.<>?\/]+$/;
+			if (specialCharPattern.test(searchValue)) {
+				alert('Search term cannot contain only special characters');
+				searchInput.focus();
+				return false;
+			}
+			
+			// If validation passes, perform search (placeholder for actual search functionality)
+			console.log('Searching for: ' + searchValue);
+			alert('Searching for: ' + searchValue);
+			return true;
+		}
+		
+		// Add real-time validation feedback
+		document.addEventListener('DOMContentLoaded', function() {
+			const searchInput = document.getElementById('search');
+			
+			searchInput.addEventListener('input', function() {
+				const value = this.value.trim();
+				
+				if (value && value.length < 2) {
+					this.setCustomValidity('Search term must be at least 2 characters');
+				} else {
+					this.setCustomValidity('');
+				}
+			});
+		});
+	</script>
 </head>
 
 <body>
@@ -184,8 +246,8 @@
 		</ul>
 
 		<div class="rightNav">
-			<input type="text" name="search" id="search">
-			<button class="btn btn-sm">Search</button>
+			<input type="text" name="search" id="search" placeholder="Search..." required minlength="2" maxlength="50">
+			<button class="btn btn-sm" onclick="handleSearch(event)">Search</button>
 		</div>
 	</nav>
 
